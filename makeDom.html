@@ -38,10 +38,18 @@
   <script>
     const documents = {
       A1: "",
-      B1: "checkbox",
-      B2: "radio",
-      B3: "number",
-      B4: "text",
+      B1: (question, onClick) => {
+        return `<input type="checkbox" name="${question.grpNo}" id="${question.id}">`;
+      },
+      B2: (question, onClick) => {
+        return `<input type="radio" name="${question.grpNo}" id="${question.id}">`;
+      },
+      B3: (question, onClick) => {
+        return `<input type="number" name="${question.grpNo}" id="${question.id}">`;
+      },
+      B4: (question, onClick) => {
+        return `<input type="text" name="${question.grpNo}" id="${question.id}">`;
+      },
     };
     /**
      */
@@ -94,9 +102,7 @@
             <tr style="display:none;">
                 <td>${q.content}</td>
                 <td>
-                    <input type="${documents[q.type]}" name="${q.grpNo}" id="${
-            q.id
-          }-1">
+                    ${documents[q.type](q)}
                 </td>
             </tr>
         `)
