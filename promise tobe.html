@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <script src="/lib/jquery.js"></script>
+    <script src="/lib/support.js"></script>
+    <ul>
+      <li>
+        <input type="number" name="faceamount" />
+        <input type="number" name="result" />
+      </li>
+      <li>
+        <input type="number" name="faceamount" />
+        <input type="number" name="result" />
+      </li>
+      <li>
+        <input type="number" name="faceamount" />
+        <input type="number" name="result" />
+      </li>
+      <li>
+        <input type="number" name="faceamount" />
+        <input type="number" name="result" />
+      </li>
+      <li>
+        <input type="number" name="faceamount" />
+        <input type="number" name="result" />
+      </li>
+      <li>
+        <input type="number" name="faceamount" />
+        <input type="number" name="result" />
+      </li>
+    </ul>
+    <button id="load">랜덤 불러오기</button>
+  </body>
+  <script>
+    $(function () {
+      const $faceamount = $(`[name="faceamount"]`);
+
+      const cal = async (event) => {
+        const target = event.target;
+
+        if (!$(target).val()) {
+          return Promise.resolve(); // 빈 값일 때도 Promise 반환
+        }
+
+        const result = await calculate($(target).val());
+        $(target).next().val(result);
+      };
+
+      $faceamount
+        .off("blur")
+        .on("blur", (event) => cal(event).then(errorValid));
+
+      const $load = $(`#load`);
+      $load.off("click").on("click", async () => {
+        $load.prop("disabled", true);
+        const $result = $(`[name="result"]`);
+        $result.val("");
+
+        $faceamount.each((_, row) => {
+          $(row).val(parseInt(Math.random() * 100));
+        });
+
+        const arr = [...$faceamount].map((el) =>
+          cal({
+            target: el,
+          })
+        );
+
+        await Promise.all(arr).then(errorValid);
+
+        await alert("계산이 완료되었습니다.");
+
+        $load.prop("disabled", false);
+      });
+    });
+  </script>
+</html>
