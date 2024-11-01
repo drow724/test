@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      li {
+        padding: 0;
+        margin: 0;
+      }
+      .progress {
+        padding: 5px 5px 5px 5px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="/lib/jquery.js"></script>
+    <script src="/lib/support.js"></script>
+    <div>
+      <ul id="progress" style="list-style: none"></ul>
+    </div>
+    <table>
+      <thead>
+        <th>질문</th>
+        <th>답변</th>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </body>
+  <script>
+    const documents = {
+      A1: "",
+      B1: "checkbox",
+      B2: "radio",
+      B3: "number",
+      B4: "text",
+    };
+    /**
+     */
+    $(function () {
+      const questionNos = [
+        ...new Set(domInfo.map(({ questionNo }) => questionNo)),
+      ];
+
+      const $questionNos = questionNos.map((questionNo) =>
+        $(`<li id="q${questionNo}" class="progress">${questionNo}</li>`)
+      );
+
+      $(`#progress`).append($questionNos);
+
+      const group = domInfo.reduce((acc, cur) => {
+        const grpNo = cur.grpNo;
+        if (acc[grpNo]) {
+          acc[grpNo].push(cur);
+          return acc;
+        }
+
+        acc[grpNo] = [];
+        acc[grpNo].push(cur);
+        return acc;
+      }, {});
+
+      const keys = Object.keys(group);
+
+      keys.map((key) => {
+        const arr = group[key];
+        const title = arr.find(({ type }) => type === "A1");
+
+        const $title = $(`
+            <tr>
+                <td>${title.content}</td>
+                <td>
+                    <input type="radio" name="${title.grpNo}" id="${title.grpNo}-1" value="Y">
+                    <label for="${title.grpNo}-1">
+                    <input type="radio" name="${title.grpNo}" id="${title.grpNo}-2" value="N">
+                    <label for="${title.grpNo}-2">
+                </td>
+            </tr>
+        `);
+
+        $(`#tbody`).append($title);
+
+        const question = arr.filter(({ type }) => type !== "A1");
+        const $questions = question.map((q) =>
+          $(`
+            <tr style="display:none;">
+                <td>${q.content}</td>
+                <td>
+                    <input type="${documents[q.type]}" name="${q.grpNo}" id="${
+            q.id
+          }-1">
+                </td>
+            </tr>
+        `)
+        );
+
+        const $yes = $title.find(`#${title.grpNo}-1`);
+        $yes.off("click").on("click", () => {
+          const $questionNo = $questionNos.find(
+            ($q) => $q.attr("id") === `q${title.questionNo}`
+          );
+          $($questionNo).css("background-color", "");
+          $questions.forEach(($question) => $question.css("display", "block"));
+        });
+
+        const $no = $title.find(`#${title.grpNo}-2`);
+        $no.off("click").on("click", () => {
+          const $questionNo = $questionNos.find(
+            ($q) => $q.attr("id") === `q${title.questionNo}`
+          );
+          $($questionNo).css("background-color", "blue");
+          $questions.forEach(($question) => $question.css("display", "none"));
+        });
+
+        $(`#tbody`).append($questions);
+      });
+    });
+  </script>
+</html>
