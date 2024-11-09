@@ -36,46 +36,56 @@
     </table>
   </body>
   <script>
-    const inputOnClick = function () {
+    const inputOn = function () {
       const siblings = this.siblings;
 
       const [b1, b2, b3, b4] = filteredByType(siblings);
+
+      const $questionNo = this.$questionNos.find(
+        ($q) => $q.attr("id") === `q${this.title.questionNo}`
+      );
+
+      if (some(b1) && some(b2) && every(b3) && every(b4)) {
+        $($questionNo).css("background-color", "blue");
+      } else {
+        $($questionNo).css("background-color", "");
+      }
     };
 
     const documents = {
-      B1: (question, onClick) => {
+      B1: (question, state) => {
         const $input = $(
           `<input type="checkbox" name="${question.grpNo}" id="${question.id}">`
         );
         $input.off("click").on("click", () => {
-          inputOnClick.call(onClick);
+          inputOn.call(state);
         });
         return $input;
       },
-      B2: (question, onClick) => {
+      B2: (question, state) => {
         const $input = $(
           `<input type="radio" name="${question.grpNo}" id="${question.id}">`
         );
         $input.off("click").on("click", () => {
-          inputOnClick.call(onClick);
+          inputOn.call(state);
         });
         return $input;
       },
-      B3: (question, onClick) => {
+      B3: (question, state) => {
         const $input = $(
           `<input type="number" name="${question.grpNo}" id="${question.id}">`
         );
-        $input.off("click").on("click", () => {
-          inputOnClick.call(onClick);
+        $input.off("keyup").on("keyup", () => {
+          inputOn.call(state);
         });
         return $input;
       },
-      B4: (question, onClick) => {
+      B4: (question, state) => {
         const $input = $(
           `<input type="text" name="${question.grpNo}" id="${question.id}">`
         );
-        $input.off("click").on("click", () => {
-          inputOnClick.call(onClick);
+        $input.off("keyup").on("keyup", () => {
+          inputOn.call(state);
         });
         return $input;
       },
@@ -85,20 +95,46 @@
       const b1 = $questions.filter(
         ($question) => $question.attr("type") === "checkbox"
       );
+      const b2 = $questions.filter(
+        ($question) => $question.attr("type") === "radio"
+      );
+      const b3 = $questions.filter(
+        ($question) => $question.attr("type") === "number"
+      );
+      const b4 = $questions.filter(
+        ($question) => $question.attr("type") === "text"
+      );
+
+      return [b1, b2, b3, b4];
     };
 
     const some = (arr) => {
-      return arr.some((key) =>
-        $questions.filter(($question) => $question.prop("checked"))
-      );
+      if (!arr.length) {
+        return true;
+      }
+      return arr.some((a) => a.prop("checked"));
     };
 
     const every = (arr) => {
-      return arr.every((key) =>
-        $questions.filter(($question) => $question.val())
-      );
+      if (!arr.length) {
+        return true;
+      }
+      return arr.every((a) => a.val());
     };
 
+    const validation = (siblings) => {
+      const [b1, b2, b3, b4] = filteredByType(siblings);
+
+      const $questionNo = this.$questionNos.find(
+        ($q) => $q.attr("id") === `q${this.title.questionNo}`
+      );
+
+      if (some(b1) && some(b2) && every(b3) && every(b4)) {
+        $($questionNo).css("background-color", "blue");
+      } else {
+        $($questionNo).css("background-color", "");
+      }
+    };
     /**
      */
     $(function () {
@@ -144,8 +180,10 @@
 
         $(`#tbody`).append($title);
 
-        const onClick = {
+        const state = {
           siblings: [],
+          $questionNos: $questionNos,
+          title: title,
           addSiblings(sibling) {
             this.siblings.push(sibling);
           },
@@ -153,8 +191,8 @@
 
         const question = arr.filter(({ type }) => type !== "A1");
         const $questions = question.map((q) => {
-          const $input = documents[q.type](q, onClick);
-          onClick.addSiblings($input);
+          const $input = documents[q.type](q, state);
+          state.addSiblings($input);
           const $tr = $(`
             <tr style="display:none;">
                 <td>${q.content}</td>
@@ -173,8 +211,8 @@
           const $questionNo = $questionNos.find(
             ($q) => $q.attr("id") === `q${title.questionNo}`
           );
-          $($questionNo).css("background-color", "");
           $questions.forEach(($question) => $question.css("display", "block"));
+          inputOn.call(state);
         });
 
         const $no = $title.find(`#${title.grpNo}-2`);
@@ -183,7 +221,13 @@
             ($q) => $q.attr("id") === `q${title.questionNo}`
           );
           $($questionNo).css("background-color", "blue");
-          $questions.forEach(($question) => $question.css("display", "none"));
+          $questions.forEach(($question) => {
+            $question.css("display", "none");
+
+            const $input = $question.find(`input`);
+            $($input).prop("checked", false);
+            $($input).val("");
+          });
         });
 
         $(`#tbody`).append($questions);
