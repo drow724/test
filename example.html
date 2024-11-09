@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      li {
+        padding: 0;
+        margin: 0;
+      }
+      .progress {
+        padding: 5px 5px 5px 5px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+
+  <body cz-shortcut-listen="true">
+    <script src="/lib/jquery.js"></script>
+    <script src="/lib/support.js"></script>
+    <div>
+      <ul id="progress" style="list-style: none">
+        <li id="q1" class="progress">1</li>
+        <li id="q2" class="progress">2</li>
+        <li id="q3" class="progress">3</li>
+      </ul>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>질문</th>
+          <th>답변</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr>
+          <td>운전을 하십니까?</td>
+          <td>
+            <input type="radio" name="0101" id="0101-1" value="Y" />
+            <label for="0101-1">
+              <input type="radio" name="0101" id="0101-2" value="N" />
+              <label for="0101-2"> </label
+            ></label>
+          </td>
+        </tr>
+        <tr>
+          <td>자가용</td>
+          <td name="input">
+            <input type="checkbox" name="0101" id="010101" />
+          </td>
+        </tr>
+        <tr>
+          <td>트럭</td>
+          <td name="input">
+            <input type="checkbox" name="0101" id="010102" />
+          </td>
+        </tr>
+        <tr>
+          <td>킥보드</td>
+          <td name="input">
+            <input type="checkbox" name="0101" id="010103" />
+          </td>
+        </tr>
+        <tr>
+          <td>자전거</td>
+          <td name="input">
+            <input type="checkbox" name="0101" id="010104" />
+          </td>
+        </tr>
+        <tr>
+          <td>기타</td>
+          <td name="input">
+            <input type="checkbox" name="0101" id="010105" />
+          </td>
+        </tr>
+        <tr>
+          <td>신체 정보를 입력해 주세요</td>
+          <td>
+            <input type="radio" name="0102" id="0102-1" value="Y" />
+            <label for="0102-1">
+              <input type="radio" name="0102" id="0102-2" value="N" />
+              <label for="0102-2"> </label
+            ></label>
+          </td>
+        </tr>
+        <tr>
+          <td>키</td>
+          <td name="input">
+            <input type="number" name="0102" id="010201" />
+          </td>
+        </tr>
+        <tr>
+          <td>몸무게</td>
+          <td name="input">
+            <input type="number" name="0102" id="010202" />
+          </td>
+        </tr>
+        <tr>
+          <td>근무처 정보를 알려주세요.</td>
+          <td>
+            <input type="radio" name="0103" id="0103-1" value="Y" />
+            <label for="0103-1">
+              <input type="radio" name="0103" id="0103-2" value="N" />
+              <label for="0103-2"> </label
+            ></label>
+          </td>
+        </tr>
+        <tr>
+          <td>근무처</td>
+          <td name="input">
+            <input type="text" name="0103" id="010301" />
+          </td>
+        </tr>
+        <tr>
+          <td>근무 지역</td>
+          <td name="input">
+            <input type="text" name="0103" id="010302" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
