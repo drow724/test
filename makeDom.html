@@ -36,21 +36,69 @@
     </table>
   </body>
   <script>
+    const inputOnClick = function () {
+      const siblings = this.siblings;
+
+      const [b1, b2, b3, b4] = filteredByType(siblings);
+    };
+
     const documents = {
-      A1: "",
       B1: (question, onClick) => {
-        return `<input type="checkbox" name="${question.grpNo}" id="${question.id}">`;
+        const $input = $(
+          `<input type="checkbox" name="${question.grpNo}" id="${question.id}">`
+        );
+        $input.off("click").on("click", () => {
+          inputOnClick.call(onClick);
+        });
+        return $input;
       },
       B2: (question, onClick) => {
-        return `<input type="radio" name="${question.grpNo}" id="${question.id}">`;
+        const $input = $(
+          `<input type="radio" name="${question.grpNo}" id="${question.id}">`
+        );
+        $input.off("click").on("click", () => {
+          inputOnClick.call(onClick);
+        });
+        return $input;
       },
       B3: (question, onClick) => {
-        return `<input type="number" name="${question.grpNo}" id="${question.id}">`;
+        const $input = $(
+          `<input type="number" name="${question.grpNo}" id="${question.id}">`
+        );
+        $input.off("click").on("click", () => {
+          inputOnClick.call(onClick);
+        });
+        return $input;
       },
       B4: (question, onClick) => {
-        return `<input type="text" name="${question.grpNo}" id="${question.id}">`;
+        const $input = $(
+          `<input type="text" name="${question.grpNo}" id="${question.id}">`
+        );
+        $input.off("click").on("click", () => {
+          inputOnClick.call(onClick);
+        });
+        return $input;
       },
     };
+
+    const filteredByType = ($questions) => {
+      const b1 = $questions.filter(
+        ($question) => $question.attr("type") === "checkbox"
+      );
+    };
+
+    const some = (arr) => {
+      return arr.some((key) =>
+        $questions.filter(($question) => $question.prop("checked"))
+      );
+    };
+
+    const every = (arr) => {
+      return arr.every((key) =>
+        $questions.filter(($question) => $question.val())
+      );
+    };
+
     /**
      */
     $(function () {
@@ -96,17 +144,29 @@
 
         $(`#tbody`).append($title);
 
+        const onClick = {
+          siblings: [],
+          addSiblings(sibling) {
+            this.siblings.push(sibling);
+          },
+        };
+
         const question = arr.filter(({ type }) => type !== "A1");
-        const $questions = question.map((q) =>
-          $(`
+        const $questions = question.map((q) => {
+          const $input = documents[q.type](q, onClick);
+          onClick.addSiblings($input);
+          const $tr = $(`
             <tr style="display:none;">
                 <td>${q.content}</td>
-                <td>
-                    ${documents[q.type](q)}
+                <td name="input">
                 </td>
             </tr>
-        `)
-        );
+          `);
+
+          const $tdInput = $tr.find(`[name="input"]`);
+          $tdInput.append($input);
+          return $tr;
+        });
 
         const $yes = $title.find(`#${title.grpNo}-1`);
         $yes.off("click").on("click", () => {
