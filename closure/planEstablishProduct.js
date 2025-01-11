@@ -1,0 +1,81 @@
+const planEstablishProduct = [
+  {
+    productName: "KB 종신보험(무)(일반심사형)",
+    productCode: "400100101",
+    currencyCode: "410",
+    faceAmount: 50000,
+    premium: 5943000,
+  },
+  {
+    productName: "고도장해보장특약",
+    productCode: "900000101",
+    currencyCode: "410",
+    premium: 40620,
+    faceAmount: 3000,
+  },
+  {
+    productName: "가족수입특약(기본형)",
+    productCode: "900300101",
+    currencyCode: "410",
+    premium: 365000,
+    faceAmount: 50000,
+  },
+  {
+    productName: "고도장해보장특약",
+    productCode: "900000101",
+    currencyCode: "410",
+    premium: 2400,
+    faceAmount: 3000,
+  },
+  {
+    productName: "재해장해보장특약 I",
+    productCode: "900201101",
+    currencyCode: "410",
+    premium: 3480,
+    faceAmount: 3000,
+  },
+  {
+    productName: "재해사망특약 I",
+    productCode: "900101101",
+    currencyCode: "410",
+    premium: 3950,
+    faceAmount: 5000,
+  },
+  {
+    productName: "재해장해보장특약 I",
+    productCode: "900201101",
+    currencyCode: "410",
+    premium: 5880,
+    faceAmount: 3000,
+  },
+  {
+    productName: "뇌혈관질환진단특약",
+    productCode: "804101101",
+    currencyCode: "410",
+    premium: 62730,
+    faceAmount: 1000,
+  },
+  {
+    productName: "입원특약Ⅱ",
+    productCode: "803801101",
+    currencyCode: "410",
+    premium: 89275,
+    faceAmount: 5000,
+  },
+  {
+    productName: "중환자실입원특약",
+    productCode: "803901101",
+    currencyCode: "410",
+    premium: 6980,
+    faceAmount: 5000,
+  },
+  {
+    productName: "1~5종수술특약",
+    productCode: "800201101",
+    currencyCode: "410",
+    premium: 102940,
+    faceAmount: 2000,
+  },
+];
+
+export default planEstablishProduct;

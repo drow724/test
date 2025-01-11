@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+
+  <body>
+    <button id="plus" onclick="setNumber((current) => current + 1)">+1</button>
+    <button id="minus" onclick="setNumber((current) => current - 1)">-1</button>
+    <div>
+      아무도 못 건드리는 변수
+      <strong id="number"></strong>
+    </div>
+  </body>
+  <script>
+    const useState = (initial) => {
+      let state = initial;
+
+      return [
+        () => state,
+        (setState) => {
+          state = setState(state);
+          render();
+        },
+      ];
+    };
+
+    const [getNumber, setNumber] = useState(0);
+
+    const render = () => {
+      const $number = document.getElementById("number");
+      $number.innerText = getNumber();
+    };
+
+    render();
+  </script>
+</html>
